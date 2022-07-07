@@ -3,11 +3,11 @@
 ## Overview of the Analysis
 
 ### Purpose
-The purpose of this project was to update the Mars web application to include Mar's hemisphere images. These full size hemisphere images will be scraped from [https://marshemispheres.com/](https://marshemispheres.com/) using the python libraries BeautifulSoup and Splinter. After, the image urls and the titles will be stored in a Mongo database and displayed in the Mars web application. Finally, the web application will be modified to be mobile-response and to include additional style components. 
+The purpose of this project was to update the Mars web application to include Mar's hemisphere images. These full size hemisphere images will be scraped from [https://marshemispheres.com](https://marshemispheres.com) using the python libraries BeautifulSoup and Splinter. After, the image urls and the titles will be stored in a Mongo database and displayed on the Mars web application. Finally, the web application will be modified to be mobile-response and to include additional style components. 
 
 ### Resources
 * Jupyter Notebook, Python 3.7.13
-* Python Libraries: Splinter, BeautifulSoup, Pandas, ChromeDriverManager
+* Python Libraries: Splinter, BeautifulSoup, Pandas, ChromeDriverManager, Flask, PyMongo
 * MongoDB
 * Bootstrap CSS Library
 
