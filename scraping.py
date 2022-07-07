@@ -11,14 +11,16 @@ def scrape_all():
     browser = Browser('chrome', **executable_path, headless=True)
 
     news_title, news_paragraph = mars_news(browser)
-
+    hemisphere_image_urls = mars_hemispheres(browser)
+    
     # Run all scraping functions and store results in a dictionary
     data = {
         "news_title": news_title,
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemispheres": hemisphere_image_urls
     }
 
     # Stop webdriver and return data
@@ -96,6 +98,57 @@ def mars_facts():
 
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+def mars_hemispheres(browser):
+    # 1. Use browser to visit the URL 
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+    
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+    html = browser.html
+    html_soup = soup(html, 'html.parser')
+
+    # find div tag that holds each link and title
+    results = html_soup.find_all('div', class_='item')
+    # start a for loop to go through each link and title
+    for result in results:
+        # empty dictionary
+        hemisphere = {}
+
+        # get the title
+        title = result.find('div', class_='description').h3.text
+
+        # get the image url by clicking html link, extracting full size image, and returning to original browser
+        # use the title to find the link and click it
+        browser.links.find_by_partial_text(title).click()
+        # Parse the new html with soup
+        html_soup = soup(browser.html, 'html.parser')
+        # use find to get the first 'li' tag, find 'a' tag, and extract the href
+        img_url = html_soup.find('li').find('a')['href']
+        # construct full url 
+        img_url = f'https://marshemispheres.com/{img_url}'
+        # return to previous browser
+        browser.back()
+
+        # print the image url and title to check
+        print('------------')
+        print(img_url)
+        print(title)
+
+        # create dictionary for current img_url and title
+        hemisphere = {
+            'img_url': img_url,
+            'title': title
+        }
+
+        # append to hemisphere_image_url list
+        hemisphere_image_urls.append(hemisphere)
+    
+    # return list of dictionary
+    return hemisphere_image_urls
 
 if __name__ == "__main__":
 
